@@ -41,7 +41,7 @@ uint8_t my_itoa(int32_t data, uint8_t * ptr, uint32_t base);
  * Given an ASCII data and a base range from 2-16, convert it into an integer
  *
  * @param ptr Character string to be converted
- * @param digits The number of digits of the converted integer
+ * @param digits The number of digits in the string
  * @param base base of the input string, ranges from 2-16
  * (for example Base 16 is hexadecimal written inASCII form )
  *

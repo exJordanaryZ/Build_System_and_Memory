@@ -2,10 +2,10 @@
  * Copyright (C) 2017 by Alex Fosdick - University of Colorado
  *
  * Redistribution, modification or use of this software in source or binary
- * forms is permitted as long as the files maintain this copyright. Users are 
+ * forms is permitted as long as the files maintain this copyright. Users are
  * permitted to modify this and use it to learn about the field of embedded
  * software. Alex Fosdick and the University of Colorado are not liable for any
- * misuse of this material. 
+ * misuse of this material.
  *
  *****************************************************************************/
 /**
@@ -20,7 +20,9 @@
  * @date April 1 2017
  *
  */
+#include <stdlib.h>
 #include "memory.h"
+#include "platform.h"
 
 /***********************************************************
  Function Definitions
@@ -48,3 +50,62 @@ void clear_all(char * ptr, unsigned int size){
   set_all(ptr, 0, size);
 }
 
+uint8_t * my_memmove(uint8_t * src, uint8_t * dst, size_t length){
+    // Copy source data to ensure no data corruption when overlap
+    uint8_t * src_copy = malloc(length * sizeof(uint8_t));
+    if (!src_copy){
+        PRINTF("Failed to allocate memory for src_copy");
+    }
+    for (int i = 0; i < length; i++){
+        *(src_copy + i) = *(src + i);
+    }
+    for (int i = 0; i < length; i++){
+        *(dst + i) = *(src_copy + i);
+    }
+    return dst;
+}
+
+uint8_t * my_memcopy(uint8_t * src, uint8_t * dst, size_t length){
+    for (int i = 0; i < length; i++){
+        *(dst + i) = *(src + i);
+    }
+    return dst;
+
+}
+
+uint8_t * my_memset(uint8_t * src, size_t length, uint8_t value){
+    for (int i = 0; i < length; i++){
+        *(src + i) = value;
+    }
+    return src;
+
+}
+
+uint8_t * my_memzero(uint8_t * src, size_t length){
+    for (int i = 0; i < length; i++){
+        *(src + i) = 0;
+    }
+    return src;
+}
+
+
+uint8_t * my_reverse(uint8_t * src, size_t length){
+
+    for (int i = 0; i < (length / 2); i++){
+        int tmp = *(src + i);
+        *(src + i) = *(src + length - 1 - i);
+        *(src + length - 1 - i) = tmp;
+    }
+    return src;
+}
+
+
+int32_t * reserve_words(size_t length){
+    int32_t * ptr = malloc(length * sizeof(int32_t));
+    return ptr;
+}
+
+
+void free_words(uint32_t * src){
+    free(src);
+}
